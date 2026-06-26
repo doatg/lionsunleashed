@@ -8,18 +8,35 @@
 
 - Companion App: External command center for Franchise mode.
 
-## MVP Pages
+## Canonical MVP Screens/Pages
 
-- Franchise Dashboard
-- Team Roster / Depth Chart
-- Weekly Game Prep
-- Injury / Transaction Tracker
-- Contract / Cap Notes
-- Scouting / Draft Board
-- Weekly AI Report
-- Broadcast Recap Page
-- Video Board
-- Info Board
+1. Dashboard
+2. Team Profile
+3. Roster / Depth Chart
+4. Weekly Game Prep
+5. Weekly AI Report
+6. Injury / Transaction Tracker
+7. Contract / Cap Notes
+8. Scouting / Draft Board
+9. Broadcast Recap
+10. Video Board
+11. Info Board
+
+## Data Objects
+
+1. Franchise
+2. TeamProfile
+3. Player
+4. DepthChart
+5. WeeklyGamePrep
+6. WeeklyAIReport
+7. Injury
+8. Transaction
+9. ContractNote
+10. DraftProspect
+11. BroadcastRecap
+12. VideoBoardItem
+13. InfoBoardItem
 
 ## Agent Types
 
