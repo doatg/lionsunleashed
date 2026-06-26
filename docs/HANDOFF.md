@@ -2,15 +2,24 @@
 
 ## Current State
 
-Project knowledge docs and graph files are being initialized for the Madden FOX Sports Network Companion App.
+Project knowledge docs and graph files now include Phase 2 data model planning for future franchise command center objects.
 
 ## Latest Completed Task
 
-- Created root-level `docs/` and `graph/` project knowledge files.
+- Phase 2 Data Model Planning added.
+
+## Changed Files
+
+- `docs/PROJECT_BRIEF.md`
+- `graph/project_graph.md`
+- `graph/entities.md`
+- `graph/relationships.md`
+- `graph/codex_task_map.md`
+- `docs/HANDOFF.md`
 
 ## Next Recommended Task
 
-- Define the first scoped MVP page or data model using `graph/codex_task_map.md`.
+- Phase 3 Screen Map Planning.
 
 ## Standing Reminders
 
