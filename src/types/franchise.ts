@@ -141,6 +141,14 @@ export interface InfoBoardItem {
   relatedEntityId?: string;
 }
 
+export interface ScreenStatus {
+  id: string;
+  title: string;
+  priority: Priority;
+  status: string;
+  summary: string;
+}
+
 export interface FranchiseDashboardData {
   franchise: Franchise;
   teamProfile: TeamProfile;
@@ -155,4 +163,5 @@ export interface FranchiseDashboardData {
   broadcastRecap: BroadcastRecap;
   videoBoard: VideoBoardItem[];
   infoBoard: InfoBoardItem[];
+  screenStatuses: ScreenStatus[];
 }
