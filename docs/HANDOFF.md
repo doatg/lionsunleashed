@@ -2,23 +2,24 @@
 
 ## Current State
 
-Sprint 1 is complete and the project now has a dedicated UI Style Design Graph documenting the visual design source of truth for future UI work. The app remains static and mock-data driven as an external franchise companion mock only with no API/backend, real file parsing, external media ingestion, protected assets, or licensed affiliation.
+Sprint 1 UI implementation is complete. The static React companion app now applies the dedicated UI Style Design Graph across the dashboard and canonical MVP screens with a persistent command navigation rail, top ticker/status strip, central screen canvas, right-side command boards where useful, layered dark premium panels, gold/white hierarchy, and dense football operations rows. The app remains mock-data driven only with no API/backend, real file parsing, external media ingestion, protected assets, or licensed affiliation.
 
 ## Latest Completed Task
 
-- Created UI Style Design Graph
+- Applied UI Style Design Graph to app screens
 
 ## Changed Files
 
-- `graph/ui_style_graph.md`
-- `graph/project_graph.md`
-- `graph/codex_task_map.md`
-- `graph/project_index.md`
+- `src/screens/Dashboard.tsx`
+- `src/screens/ScreenShell.tsx`
+- `src/components/CommandComponents.tsx`
+- `src/styles.css`
+- `src/vite-env.d.ts`
 - `docs/HANDOFF.md`
 
 ## Next Recommended Task
 
-- Apply UI Style Design Graph to app screens
+- Local visual review, then targeted Roster / Depth Chart polish
 
 ## Standing Reminders
 
