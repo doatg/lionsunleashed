@@ -2,7 +2,7 @@
 
 ## Madden FOX Sports Network Companion App
 
-External Madden/NFL Franchise companion app for Rolland G, a franchise-focused Madden player who is not online-focused.
+External Madden Franchise companion app for Rolland G, a franchise-focused Madden player who is not online-focused.
 
 ## Purpose
 
@@ -12,15 +12,16 @@ Create a broadcast-style franchise command center for Franchise mode. This is no
 
 Use original broadcast-inspired styling only. Do not copy or imply affiliation with FOX, NFL, EA, Madden, teams, leagues, broadcasts, logos, marks, uniforms, or protected assets.
 
-## MVP Features
+## Canonical MVP Screens/Pages
 
-- Franchise Dashboard
-- Team Roster / Depth Chart
-- Weekly Game Prep
-- Injury / Transaction Tracker
-- Contract / Cap Notes
-- Scouting / Draft Board
-- Weekly AI Report
-- Broadcast Recap Page
-- Video Board
-- Info Board
+1. Dashboard
+2. Team Profile
+3. Roster / Depth Chart
+4. Weekly Game Prep
+5. Weekly AI Report
+6. Injury / Transaction Tracker
+7. Contract / Cap Notes
+8. Scouting / Draft Board
+9. Broadcast Recap
+10. Video Board
+11. Info Board
