@@ -2,26 +2,22 @@
 
 ## Current State
 
-Sprint 1 is complete. The Vite React TypeScript scaffold now presents a polished dark command-center mock app with internal screen navigation, canonical screen shells, and expanded static franchise data. The app remains an external franchise companion mock only with original broadcast-inspired styling and no API/backend, real file parsing, external media ingestion, protected assets, or licensed affiliation.
+Sprint 1 is complete and the visible app layout has been corrected toward the intended original sports broadcast franchise command center direction. The app now presents a desktop-first command rail, broadcast-style ticker/status bar, weekly command canvas, and right-side board stack while remaining static and mock-data driven. It remains an external franchise companion mock only with no API/backend, real file parsing, external media ingestion, protected assets, or licensed affiliation.
 
 ## Latest Completed Task
 
-- Sprint 1 dashboard polish, screen shells, navigation, and mock data expansion
+- Corrected UI direction toward broadcast franchise command center
 
 ## Changed Files
 
 - `src/App.tsx`
 - `src/styles.css`
-- `src/data/mockFranchise.ts`
-- `src/types/franchise.ts`
-- `src/components/DashboardCard.tsx`
 - `src/screens/Dashboard.tsx`
-- `src/screens/ScreenShell.tsx`
 - `docs/HANDOFF.md`
 
 ## Next Recommended Task
 
-- Local build verification on user machine, then MVP UI polish pass
+- Local visual review and second UI polish pass
 
 ## Standing Reminders
 

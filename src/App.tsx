@@ -15,17 +15,17 @@ import {
 } from './screens/ScreenShell';
 
 const screens = [
-  { id: 'dashboard', label: 'Dashboard' },
-  { id: 'team-profile', label: 'Team Profile' },
-  { id: 'roster-depth-chart', label: 'Roster / Depth Chart' },
-  { id: 'weekly-game-prep', label: 'Weekly Game Prep' },
-  { id: 'weekly-ai-report', label: 'Weekly AI Report' },
-  { id: 'injury-transaction-tracker', label: 'Injury / Transaction Tracker' },
-  { id: 'contract-cap-notes', label: 'Contract / Cap Notes' },
-  { id: 'scouting-draft-board', label: 'Scouting / Draft Board' },
-  { id: 'broadcast-recap', label: 'Broadcast Recap' },
-  { id: 'video-board', label: 'Video Board' },
-  { id: 'info-board', label: 'Info Board' },
+  { id: 'dashboard', label: 'Dashboard', shortLabel: 'Dash', code: '01' },
+  { id: 'team-profile', label: 'Team Profile', shortLabel: 'Profile', code: '02' },
+  { id: 'roster-depth-chart', label: 'Roster / Depth Chart', shortLabel: 'Roster', code: '03' },
+  { id: 'weekly-game-prep', label: 'Weekly Game Prep', shortLabel: 'Prep', code: '04' },
+  { id: 'weekly-ai-report', label: 'Weekly AI Report', shortLabel: 'AI Report', code: '05' },
+  { id: 'injury-transaction-tracker', label: 'Injury / Transaction Tracker', shortLabel: 'Injuries', code: '06' },
+  { id: 'contract-cap-notes', label: 'Contract / Cap Notes', shortLabel: 'Cap', code: '07' },
+  { id: 'scouting-draft-board', label: 'Scouting / Draft Board', shortLabel: 'Scouting', code: '08' },
+  { id: 'broadcast-recap', label: 'Broadcast Recap', shortLabel: 'Recap', code: '09' },
+  { id: 'video-board', label: 'Video Board', shortLabel: 'Video', code: '10' },
+  { id: 'info-board', label: 'Info Board', shortLabel: 'Info', code: '11' },
 ];
 
 export default function App() {
@@ -37,39 +37,81 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      <header className="hero-panel">
-        <div>
-          <p className="kicker">Franchise Operations Desk</p>
-          <h1>Madden Franchise Command Center</h1>
-          <p className="hero-copy">external franchise command center</p>
-        </div>
-        <div className="scorebug" aria-label="Current franchise context">
-          <span>Season {mockFranchise.franchise.seasonYear}</span>
-          <strong>Week {mockFranchise.franchise.currentWeek}</strong>
-          <span>{mockFranchise.franchise.userName}</span>
-        </div>
-      </header>
+      <TopTicker activeScreenLabel={activeScreenLabel} />
 
-      <nav className="screen-nav" aria-label="Command center screens">
-        {screens.map((screen) => (
-          <button
-            className={screen.id === selectedScreen ? 'active' : ''}
-            key={screen.id}
-            type="button"
-            onClick={() => setSelectedScreen(screen.id)}
-          >
-            {screen.label}
-          </button>
-        ))}
-      </nav>
+      <div className="command-layout">
+        <aside className="command-rail" aria-label="Command navigation rail">
+          <div className="rail-brand">
+            <span className="rail-mark">MC</span>
+            <div>
+              <strong>Madden Franchise</strong>
+              <span>Command Center</span>
+            </div>
+          </div>
 
-      <div className="active-screen-label" aria-live="polite">
-        <span>Now Viewing</span>
-        <strong>{activeScreenLabel}</strong>
+          <nav className="screen-nav" aria-label="Command center screens">
+            {screens.map((screen) => (
+              <button
+                className={screen.id === selectedScreen ? 'active' : ''}
+                key={screen.id}
+                type="button"
+                onClick={() => setSelectedScreen(screen.id)}
+              >
+                <span>{screen.code}</span>
+                <strong>{screen.shortLabel}</strong>
+                <em>{screen.label}</em>
+              </button>
+            ))}
+          </nav>
+
+          <div className="rail-footer">
+            <span>Selected Desk</span>
+            <strong>{activeScreenLabel}</strong>
+          </div>
+        </aside>
+
+        <section className="content-stage" aria-label={`${activeScreenLabel} content`}>
+          <header className="hero-panel">
+            <div>
+              <p className="kicker">Franchise Operations Desk</p>
+              <h1>Madden Franchise Command Center</h1>
+              <p className="hero-copy">Original broadcast-style franchise war room for weekly prep, roster decisions, and story boards.</p>
+            </div>
+            <div className="scorebug" aria-label="Current franchise context">
+              <span>Season {mockFranchise.franchise.seasonYear}</span>
+              <strong>Week {mockFranchise.franchise.currentWeek}</strong>
+              <span>{mockFranchise.franchise.userName}</span>
+            </div>
+          </header>
+
+          <div className="active-screen-label" aria-live="polite">
+            <span>Now Viewing</span>
+            <strong>{activeScreenLabel}</strong>
+          </div>
+
+          {renderScreen(selectedScreen, setSelectedScreen)}
+        </section>
       </div>
-
-      {renderScreen(selectedScreen, setSelectedScreen)}
     </main>
+  );
+}
+
+function TopTicker({ activeScreenLabel }: { activeScreenLabel: string }) {
+  const { franchise, weeklyGamePrep, weeklyAIReport, injuries, videoBoard } = mockFranchise;
+
+  return (
+    <section className="top-ticker" aria-label="Broadcast-style franchise status ticker">
+      <div className="ticker-live">Command Live</div>
+      <div className="ticker-track">
+        <span>{franchise.name}</span>
+        <span>Season {franchise.seasonYear} · Week {franchise.currentWeek}</span>
+        <span>Next opponent: {weeklyGamePrep.opponent}</span>
+        <span>{weeklyAIReport.actionItems.length} AI action items</span>
+        <span>{injuries.length} availability alerts</span>
+        <span>{videoBoard.length} video board clips queued</span>
+        <span>Active desk: {activeScreenLabel}</span>
+      </div>
+    </section>
   );
 }
 
