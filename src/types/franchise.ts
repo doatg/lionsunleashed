@@ -164,4 +164,5 @@ export interface FranchiseDashboardData {
   videoBoard: VideoBoardItem[];
   infoBoard: InfoBoardItem[];
   screenStatuses: ScreenStatus[];
+  tickerFeed: string[];
 }
