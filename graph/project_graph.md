@@ -12,6 +12,8 @@ Madden Franchise Command Center is an external Franchise mode command center for
 - MVP: Dashboard, Team Profile, Roster / Depth Chart, Weekly Game Prep, Weekly AI Report, Injury / Transaction Tracker, Contract / Cap Notes, Scouting / Draft Board, Broadcast Recap, Video Board, Info Board
 - Agents: Franchise Director, GM Advisor, Contract, Scouting, Draft Board, Injury Tracker, Transaction, Weekly Opponent Prep, Broadcast Recap, League Newsroom, Video Board, Info Board, Power Rankings, Player Personality, Handoff
 - Brand Safety: Original broadcast-inspired identity only
+- Visual Design Source of Truth: `graph/ui_style_graph.md`
+- Global UI Style Design System: premium franchise-game hub, broadcast war room, GM / coach command center, desktop-first sports operations console
 
 ## Boundaries
 
@@ -283,6 +285,14 @@ Madden Franchise Command Center is an external Franchise mode command center for
 - Primary data objects: InfoBoardItem, Franchise, TeamProfile, Player, BroadcastRecap.
 - Owned by agent: Info Board.
 - First version scope: Categorized fact cards and reminders.
+
+## Global UI Style Design System
+
+- Source of truth: `graph/ui_style_graph.md`.
+- Applies to every UI-related implementation, styling, layout, component, screen, and design-system task.
+- Required shell: persistent left command navigation rail, persistent top live ticker/status strip, central screen canvas, and optional right-side command board area.
+- Required feel: premium football franchise companion app, franchise-game hub, broadcast war room, GM / coach command center, and desktop-first sports operations console.
+- Brand safety: original protected-safe design only; do not copy Madden, EA, NFL, team, league, broadcaster, or real-player designs, assets, marks, uniforms, graphics, logos, likenesses, or trade dress.
 
 ## Phase 4 App Scaffold Planning
 
