@@ -55,7 +55,7 @@ export function Dashboard({ data, onSelectScreen }: DashboardProps) {
             <div className="overview-card">
               <span>Next Opponent</span>
               <strong>{weeklyGamePrep.opponent}</strong>
-              <p>{weeklyGamePrep.goals[0]} · {weeklyGamePrep.goals[1]}</p>
+              <p>{weeklyGamePrep.goals.slice(0, 2).join(' \u00b7 ') || 'No goals set'}</p>
             </div>
             <div className="overview-card">
               <span>Roster Needs</span>
@@ -108,7 +108,7 @@ export function Dashboard({ data, onSelectScreen }: DashboardProps) {
                   {injury.returnEstimate}
                 </p>
               ))}
-              <p className="muted-copy">Latest movement: {transactions[0]?.details}</p>
+              <p className="muted-copy">Latest movement: {transactions[0]?.details ?? 'No recent transactions'}</p>
             </DashboardCard>
 
             <DashboardCard title="Contract + Cap Priorities" eyebrow="Front office clock">

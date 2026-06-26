@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { mockFranchise } from './data/mockFranchise';
 import { Dashboard } from './screens/Dashboard';
 import {
@@ -89,7 +90,9 @@ export default function App() {
             <strong>{activeScreenLabel}</strong>
           </div>
 
-          {renderScreen(selectedScreen, setSelectedScreen)}
+          <ErrorBoundary>
+            {renderScreen(selectedScreen, setSelectedScreen)}
+          </ErrorBoundary>
         </section>
       </div>
     </main>
