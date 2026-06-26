@@ -1,180 +1,58 @@
 import type { ReactNode } from 'react';
-import type { FranchiseDashboardData, Priority } from '../types/franchise';
+import { AlertStack, AttributeBar, BoardPanel, CommandPanel, DataRow, FeaturePanel, PlayerCard, PriorityBadge, RatingBadge, ScreenHeader } from '../components/CommandComponents';
+import type { FranchiseDashboardData, Player, Priority } from '../types/franchise';
 
-interface ScreenShellProps {
-  title: string;
-  eyebrow: string;
-  summary: string;
-  priority?: Priority;
-  children: ReactNode;
-}
+interface ScreenShellProps { title: string; eyebrow: string; summary: string; priority?: Priority; badges?: string[]; children: ReactNode; board?: ReactNode; }
 
-export function ScreenShell({ title, eyebrow, summary, priority, children }: ScreenShellProps) {
+export function ScreenShell({ title, eyebrow, summary, priority, badges, children, board }: ScreenShellProps) {
   return (
-    <section className="screen-shell">
-      <div className="screen-heading">
-        <div>
-          <p className="kicker">{eyebrow}</p>
-          <h2>{title}</h2>
-          <p>{summary}</p>
-        </div>
-        {priority ? <span className={`priority-pill priority-${priority.toLowerCase()}`}>{priority}</span> : null}
+    <section className="station-shell">
+      <ScreenHeader eyebrow={eyebrow} title={title} subtitle={summary} priority={priority} badges={badges} />
+      <div className={board ? 'station-layout' : 'station-layout station-layout-full'}>
+        <div className="station-main">{children}</div>
+        {board ? <aside className="station-board">{board}</aside> : null}
       </div>
-      <div className="screen-panel-grid">{children}</div>
     </section>
   );
 }
 
 export function TeamProfileScreen({ data }: { data: FranchiseDashboardData }) {
+  const { teamProfile, franchise } = data;
   return (
-    <ScreenShell title="Team Profile" eyebrow="Identity desk" summary={data.teamProfile.schemeNotes} priority="High">
-      <InfoPanel title="Strengths" items={data.teamProfile.strengths} />
-      <InfoPanel title="Weaknesses" items={data.teamProfile.weaknesses} />
-      <InfoPanel title="Season Priorities" items={data.teamProfile.priorities} />
+    <ScreenShell title="Team Profile" eyebrow="Identity command" summary="Franchise identity, current season posture, scheme DNA, strengths, weaknesses, and goal stack." priority="High" badges={[`Week ${franchise.currentWeek}`, franchise.status]} board={<><CommandPanel eyebrow="Franchise goals" title="Owner box"><AlertStack items={franchise.goals.map((goal, index) => ({ id: goal, priority: index === 0 ? 'High' : 'Medium', title: `Goal ${index + 1}`, detail: goal }))} /></CommandPanel></>}>
+      <FeaturePanel eyebrow={`${teamProfile.city} station`} title={teamProfile.teamName} className="wide-panel"><p className="stat-line">{teamProfile.schemeNotes}</p><div className="metric-strip"><RatingBadge label="Identity" value="BAL" /><RatingBadge label="Tempo" value="MID" /><RatingBadge label="Risk" value="MED" /></div></FeaturePanel>
+      <CommandPanel eyebrow="Strength report" title="What travels"><>{teamProfile.strengths.map((item, i) => <AttributeBar key={item} label={item} value={88 - i * 7} />)}</></CommandPanel>
+      <CommandPanel eyebrow="Stress report" title="What must be protected" tone="danger"><>{teamProfile.weaknesses.map((item, i) => <AttributeBar key={item} label={item} value={68 - i * 4} note="Weekly staff attention" />)}</></CommandPanel>
+      <BoardPanel eyebrow="Season direction" title="Priority wall">{teamProfile.priorities.map((item) => <DataRow key={item} label="Goal" title={item} meta="Active franchise target" />)}</BoardPanel>
     </ScreenShell>
   );
 }
 
 export function RosterDepthChartScreen({ data }: { data: FranchiseDashboardData }) {
+  const featured = data.players[1];
   return (
-    <ScreenShell title="Roster / Depth Chart" eyebrow="Personnel board" summary="Starter groups, need levels, and player notes for roster planning." priority="High">
-      <div className="panel wide-panel">
-        {data.depthChart.map((group) => (
-          <div className="board-row" key={group.id}>
-            <span>{group.positionGroup}</span>
-            <strong>{nameFor(data, group.starterPlayerId)}</strong>
-            <em>{group.needLevel} need · {group.notes}</em>
-          </div>
-        ))}
-      </div>
-      <InfoPanel title="Roster Notes" items={data.players.map((player) => `${player.position} ${player.name}: ${player.notes}`)} />
+    <ScreenShell title="Roster / Depth Chart" eyebrow="Personnel command" summary="Detailed player standard with feature player, starter order, backups, needs, injury watch, and contract watch." priority="High" badges={[`${data.players.length} roster cards`, `${data.depthChart.length} groups`]} board={<><CommandPanel eyebrow="Injury watch" title="Availability"><>{data.injuries.map((i) => <DataRow key={i.id} label={i.status} title={nameFor(data, i.playerId)} meta={`${i.bodyPart} · ${i.returnEstimate}`} badge={<PriorityBadge priority={i.status === 'Questionable' ? 'High' : 'Medium'} />} />)}</></CommandPanel><CommandPanel eyebrow="Contract watch" title="Front office clock"><>{data.contractNotes.map((n) => <DataRow key={n.id} label={n.priority} title={nameFor(data, n.playerId)} meta={n.decisionWindow} />)}</></CommandPanel></>}>
+      <FeaturePanel eyebrow="Featured player panel" title="Primary offensive weapon" className="wide-panel"><PlayerCard player={featured} /><div className="attribute-grid"><AttributeBar label="Explosive usage" value={92} /><AttributeBar label="Weekly matchup value" value={90} /><AttributeBar label="Extension urgency" value={84} /></div></FeaturePanel>
+      {data.depthChart.map((group) => <BoardPanel key={group.id} eyebrow={`${group.needLevel} need`} title={group.positionGroup}><DataRow label="Starter" title={nameFor(data, group.starterPlayerId)} meta={group.notes} badge={<PriorityBadge priority={group.needLevel} />} />{group.backupPlayerIds.length ? group.backupPlayerIds.map((id) => <DataRow key={id} label="Backup" title={nameFor(data, id)} meta="Rotation role" />) : <DataRow label="Backup" title="Emergency depth review" meta="No stable reserve assigned" />}</BoardPanel>)}
     </ScreenShell>
   );
 }
 
-export function WeeklyGamePrepScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Weekly Game Prep" eyebrow={`Week ${data.weeklyGamePrep.week}`} summary={data.weeklyGamePrep.matchupNotes} priority="Critical">
-      <InfoPanel title="Focus Areas" items={data.weeklyGamePrep.focusAreas} />
-      <InfoPanel title="Key Risks" items={data.weeklyGamePrep.keyRisks} />
-      <InfoPanel title="Game Goals" items={data.weeklyGamePrep.goals} />
-    </ScreenShell>
-  );
-}
+export function WeeklyGamePrepScreen({ data }: { data: FranchiseDashboardData }) { const prep = data.weeklyGamePrep; return <ScreenShell title="Weekly Game Prep" eyebrow={`Week ${prep.week} matchup board`} summary={prep.matchupNotes} priority="Critical" badges={[`Opponent: ${prep.opponent}`, 'Plan lock pending']} board={<><CommandPanel eyebrow="Risk stack" title="Game hazards" tone="danger"><AlertStack items={prep.keyRisks.map((r, i) => ({ id: r, priority: i < 2 ? 'High' : 'Medium', title: r, detail: 'Build a call-sheet answer before kickoff.' }))} /></CommandPanel><CommandPanel eyebrow="Win condition" title="Must happen"><>{prep.goals.map((g) => <DataRow key={g} label="Goal" title={g} meta="Weekly objective" />)}</></CommandPanel></>}><FeaturePanel eyebrow="Opponent panel" title={prep.opponent} className="wide-panel"><p>{prep.matchupNotes}</p><div className="metric-strip"><RatingBadge label="Pressure" value="HIGH" /><RatingBadge label="Tempo" value="FAST" /><RatingBadge label="Turnover" value="KEY" /></div></FeaturePanel><CommandPanel eyebrow="Offensive plan" title="Attack rules"><>{prep.focusAreas.slice(0, 2).map((f) => <DataRow key={f} label="Call" title={f} meta="Offensive install" />)}</></CommandPanel><CommandPanel eyebrow="Defensive plan" title="Contain rules"><>{prep.focusAreas.slice(2).map((f) => <DataRow key={f} label="Check" title={f} meta="Defensive answer" />)}</></CommandPanel><BoardPanel eyebrow="Key matchup" title={`${nameFor(data, 'player-wr1')} vs nickel coverage`}><PlayerCard player={playerFor(data, 'player-wr1')} detail="Use motion and stacked releases to test leverage without forcing contested throws." /></BoardPanel></ScreenShell>; }
 
-export function WeeklyAIReportScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Weekly AI Report" eyebrow="Command readout" summary={data.weeklyAIReport.summary} priority="High">
-      <InfoPanel title="Recommendations" items={data.weeklyAIReport.recommendations} />
-      <InfoPanel title="Risks" items={data.weeklyAIReport.risks} />
-      <InfoPanel title="Opportunities" items={data.weeklyAIReport.opportunities} />
-      <InfoPanel title="Action Items" items={data.weeklyAIReport.actionItems} />
-    </ScreenShell>
-  );
-}
+export function WeeklyAIReportScreen({ data }: { data: FranchiseDashboardData }) { const r = data.weeklyAIReport; return <ScreenShell title="Weekly AI Report" eyebrow="Coach / GM recommendation board" summary={r.summary} priority="High" badges={[`${r.actionItems.length} action items`, `Week ${r.week}`]} board={<CommandPanel eyebrow="Action items" title="Execute next"><>{r.actionItems.map((a) => <DataRow key={a} label="Task" title={a} meta="Needs owner" badge={<PriorityBadge priority="High" />} />)}</></CommandPanel>}><FeaturePanel eyebrow="Recommendation readout" title="Command summary" className="wide-panel"><p>{r.summary}</p>{r.recommendations.map((x) => <DataRow key={x} label="Rec" title={x} meta="Staff recommendation" />)}</FeaturePanel><CommandPanel eyebrow="Risks" title="Red flags" tone="danger"><AlertStack items={r.risks.map((x) => ({ id: x, priority: 'High', title: x, detail: 'Monitor through roster, prep, or cap board.' }))} /></CommandPanel><CommandPanel eyebrow="Opportunities" title="Exploit windows"><>{r.opportunities.map((x) => <DataRow key={x} label="Open" title={x} meta="Upside path" />)}</></CommandPanel></ScreenShell>; }
 
-export function InjuryTransactionScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Injury / Transaction Tracker" eyebrow="Availability log" summary="Static injury and roster movement tracker for weekly decisions." priority="Medium">
-      <div className="panel">
-        <h3>Injuries</h3>
-        {data.injuries.map((injury) => (
-          <p key={injury.id}><strong>{nameFor(data, injury.playerId)}</strong>: {injury.status} · {injury.bodyPart} · {injury.impactNotes}</p>
-        ))}
-      </div>
-      <div className="panel">
-        <h3>Transactions</h3>
-        {data.transactions.map((transaction) => (
-          <p key={transaction.id}><strong>{transaction.transactionType}</strong>: {transaction.details} {transaction.rosterImpact}</p>
-        ))}
-      </div>
-    </ScreenShell>
-  );
-}
+export function InjuryTransactionScreen({ data }: { data: FranchiseDashboardData }) { return <ScreenShell title="Injury / Transaction Tracker" eyebrow="Availability command" summary="Player availability, movement rows, return estimates, and roster impact tags." priority="Medium" board={<CommandPanel eyebrow="Impact tags" title="Roster stress"><>{data.injuries.map((i) => <DataRow key={i.id} label={i.status} title={nameFor(data, i.playerId)} meta={i.impactNotes} />)}</></CommandPanel>}><FeaturePanel eyebrow="Availability board" title="Medical and workload status" className="wide-panel">{data.injuries.map((i) => <DataRow key={i.id} label={i.returnEstimate} title={`${nameFor(data, i.playerId)} · ${i.bodyPart}`} meta={`${i.duration} · ${i.impactNotes}`} badge={<PriorityBadge priority={i.status === 'Questionable' ? 'High' : 'Medium'} />} />)}</FeaturePanel><BoardPanel eyebrow="Recent movement" title="Transaction rows">{data.transactions.map((t) => <DataRow key={t.id} label={`W${t.week}`} title={t.transactionType} meta={`${t.details} · ${t.rosterImpact}`} />)}</BoardPanel></ScreenShell>; }
 
-export function ContractCapScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Contract / Cap Notes" eyebrow="Front office notebook" summary="Extension, cap, and veteran bridge notes for team-building decisions." priority="Medium">
-      {data.contractNotes.map((note) => (
-        <div className="panel" key={note.id}>
-          <h3>{nameFor(data, note.playerId)}</h3>
-          <p><strong>{note.capStatus}</strong> · {note.contractYear} · {note.priority} priority</p>
-          <p>{note.note}</p>
-          <p className="muted-copy">Decision window: {note.decisionWindow}</p>
-        </div>
-      ))}
-    </ScreenShell>
-  );
-}
+export function ContractCapScreen({ data }: { data: FranchiseDashboardData }) { return <ScreenShell title="Contract / Cap Notes" eyebrow="Front-office board" summary="Extension candidates, cap risks, decision windows, and priority tags." priority="Medium" board={<CommandPanel eyebrow="Decision clock" title="Priority windows"><>{data.contractNotes.map((n) => <DataRow key={n.id} label={n.priority} title={nameFor(data, n.playerId)} meta={n.decisionWindow} badge={<PriorityBadge priority={n.priority} />} />)}</></CommandPanel>}><FeaturePanel eyebrow="Cap strategy" title="Keep flexibility without losing core pieces" className="wide-panel"><p>Every veteran decision is paired with roster need, scouting replacement timeline, and weekly movement impact.</p><div className="metric-strip"><RatingBadge label="Flex" value="MED" /><RatingBadge label="Core" value="2" /><RatingBadge label="Risk" value="OL" /></div></FeaturePanel>{data.contractNotes.map((n) => <BoardPanel key={n.id} eyebrow={n.capStatus} title={nameFor(data, n.playerId)}><DataRow label={n.contractYear} title={n.note} meta={n.decisionWindow} badge={<PriorityBadge priority={n.priority} />} /></BoardPanel>)}</ScreenShell>; }
 
-export function ScoutingDraftBoardScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Scouting / Draft Board" eyebrow="War room" summary="Ranked static prospect board tied to current roster needs." priority="High">
-      {data.draftProspects.map((prospect) => (
-        <div className="panel" key={prospect.id}>
-          <h3>#{prospect.rank} {prospect.name} · {prospect.position}</h3>
-          <p>{prospect.school} · Round {prospect.projectedRound} · Grade {prospect.grade}</p>
-          <p>{prospect.fitNotes}</p>
-          <p className="muted-copy">Traits: {prospect.traits.join(', ')}</p>
-        </div>
-      ))}
-    </ScreenShell>
-  );
-}
+export function ScoutingDraftBoardScreen({ data }: { data: FranchiseDashboardData }) { return <ScreenShell title="Scouting / Draft Board" eyebrow="Draft room" summary="Ranked prospect wall with grades, projected rounds, traits, and team-need fit." priority="High" board={<CommandPanel eyebrow="Need fits" title="Board intent"><>{data.depthChart.filter((g) => g.needLevel !== 'Low').map((g) => <DataRow key={g.id} label={g.needLevel} title={g.positionGroup} meta={g.notes} badge={<PriorityBadge priority={g.needLevel} />} />)}</></CommandPanel>}><FeaturePanel eyebrow="Top of board" title="Prospect ranking command" className="wide-panel">{data.draftProspects.map((p) => <DataRow key={p.id} label={`#${p.rank}`} title={`${p.name} · ${p.position}`} meta={`${p.school} · Rd ${p.projectedRound} · Grade ${p.grade}`} badge={<RatingBadge label="Grade" value={p.grade} />} />)}</FeaturePanel>{data.draftProspects.map((p) => <BoardPanel key={p.id} eyebrow={`Round ${p.projectedRound}`} title={`${p.name} fit card`}><p>{p.fitNotes}</p><p className="muted-copy">Traits: {p.traits.join(' · ')}</p></BoardPanel>)}</ScreenShell>; }
 
-export function BroadcastRecapScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Broadcast Recap" eyebrow="Postgame desk" summary={data.broadcastRecap.summary} priority="Medium">
-      <div className="panel wide-panel">
-        <h3>{data.broadcastRecap.headline}</h3>
-        <p><strong>{data.broadcastRecap.result}</strong> vs {data.broadcastRecap.opponent}</p>
-        <p>Key players: {data.broadcastRecap.keyPlayers.join(', ')}</p>
-      </div>
-      <InfoPanel title="Storyline Notes" items={data.broadcastRecap.storylineNotes} />
-    </ScreenShell>
-  );
-}
+export function BroadcastRecapScreen({ data }: { data: FranchiseDashboardData }) { const r = data.broadcastRecap; return <ScreenShell title="Broadcast Recap" eyebrow="Story desk" summary={r.summary} priority="Medium" badges={[`Week ${r.week}`, r.result]} board={<CommandPanel eyebrow="Next-week storyline" title="Carry forward"><DataRow label="Theme" title={data.infoBoard[2].value} meta={data.infoBoard[2].context} /></CommandPanel>}><FeaturePanel eyebrow="Headline" title={r.headline} className="wide-panel"><p className="stat-line">{r.result} vs {r.opponent}</p><p>{r.summary}</p><div className="metric-strip">{r.keyPlayers.map((p) => <RatingBadge key={p} label="Key" value={p.split(' ')[0]} />)}</div></FeaturePanel><BoardPanel eyebrow="Story beats" title="Narrative rundown">{r.storylineNotes.map((n) => <DataRow key={n} label="Beat" title={n} meta="Recap note" />)}</BoardPanel></ScreenShell>; }
 
-export function VideoBoardScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Video Board" eyebrow="Clip desk" summary="Original clip ideas and film prompts for future media organization." priority="Low">
-      {data.videoBoard.map((item) => (
-        <div className="panel" key={item.id}>
-          <h3>{item.title}</h3>
-          <p>{item.clipType} · Week {item.week} · {item.status}</p>
-          <p>{item.description}</p>
-        </div>
-      ))}
-    </ScreenShell>
-  );
-}
+export function VideoBoardScreen({ data }: { data: FranchiseDashboardData }) { return <ScreenShell title="Video Board" eyebrow="Media wall" summary="Clip ideas, production status, related player/week, and production notes." priority="Low" board={<CommandPanel eyebrow="Production notes" title="Queue health"><>{data.videoBoard.map((v) => <DataRow key={v.id} label={v.status} title={v.title} meta={`Week ${v.week}`} />)}</></CommandPanel>}><FeaturePanel eyebrow="Media wall" title="Queued football storytelling" className="wide-panel"><p>Original clip prompts only; no external media ingestion or protected assets.</p></FeaturePanel>{data.videoBoard.map((v) => <BoardPanel key={v.id} eyebrow={v.clipType} title={v.title}><DataRow label={`W${v.week}`} title={v.description} meta={v.relatedPlayerId ? `Related: ${nameFor(data, v.relatedPlayerId)}` : 'Team note'} badge={<RatingBadge label="Status" value={v.status} />} /></BoardPanel>)}</ScreenShell>; }
 
-export function InfoBoardScreen({ data }: { data: FranchiseDashboardData }) {
-  return (
-    <ScreenShell title="Info Board" eyebrow="Quick facts" summary="Reference facts, reminders, and franchise display cards." priority="Low">
-      {data.infoBoard.map((item) => (
-        <div className="panel" key={item.id}>
-          <h3>{item.title}</h3>
-          <p><strong>{item.value}</strong></p>
-          <p>{item.context}</p>
-          <p className="muted-copy">{item.category} · {item.priority} priority</p>
-        </div>
-      ))}
-    </ScreenShell>
-  );
-}
+export function InfoBoardScreen({ data }: { data: FranchiseDashboardData }) { return <ScreenShell title="Info Board" eyebrow="Quick-reference wall" summary="Facts, reminders, milestones, and franchise notes for fast operational context." priority="Low" board={<CommandPanel eyebrow="Reminders" title="Pinned notes"><>{data.franchise.goals.map((g) => <DataRow key={g} label="Pin" title={g} meta="Franchise reminder" />)}</></CommandPanel>}><FeaturePanel eyebrow="Reference wall" title="Franchise facts at a glance" className="wide-panel"><div className="metric-strip"><RatingBadge label="Week" value={data.franchise.currentWeek} /><RatingBadge label="Facts" value={data.infoBoard.length} /><RatingBadge label="Alerts" value={data.injuries.length} /></div></FeaturePanel>{data.infoBoard.map((i) => <BoardPanel key={i.id} eyebrow={i.category} title={i.title}><DataRow label={i.priority} title={i.value} meta={i.context} badge={<PriorityBadge priority={i.priority} />} /></BoardPanel>)}</ScreenShell>; }
 
-function InfoPanel({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div className="panel">
-      <h3>{title}</h3>
-      <ul>
-        {items.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-    </div>
-  );
-}
-
-function nameFor(data: FranchiseDashboardData, playerId: string) {
-  return data.players.find((player) => player.id === playerId)?.name ?? 'Unassigned';
-}
+function nameFor(data: FranchiseDashboardData, playerId: string) { return data.players.find((player) => player.id === playerId)?.name ?? 'Unassigned'; }
+function playerFor(data: FranchiseDashboardData, playerId: string): Player { return data.players.find((player) => player.id === playerId) ?? data.players[0]; }

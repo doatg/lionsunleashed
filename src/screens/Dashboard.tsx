@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { DashboardCard } from '../components/DashboardCard';
+import { FeaturePanel, RatingBadge, ScreenHeader } from '../components/CommandComponents';
 import type { FranchiseDashboardData } from '../types/franchise';
 
 interface DashboardProps {
@@ -30,6 +31,13 @@ export function Dashboard({ data, onSelectScreen }: DashboardProps) {
 
   return (
     <>
+      <ScreenHeader
+        eyebrow="Franchise hub // live operations"
+        title="Dashboard / Franchise Hub"
+        subtitle="Front command hub for roster, game prep, AI report, injuries, contracts, scouting, recap, video, and info board signals."
+        priority="Critical"
+        badges={[`Week ${franchise.currentWeek}`, `${franchise.seasonYear} season`, activeHubStatus(screenStatuses)]}
+      />
       <section className="ticker-strip" aria-label="Franchise goals">
         {franchise.goals.map((goal) => (
           <span key={goal}>{goal}</span>
@@ -62,6 +70,15 @@ export function Dashboard({ data, onSelectScreen }: DashboardProps) {
           </section>
 
           <div className="dashboard-grid">
+            <FeaturePanel eyebrow="Primary franchise panel" title="Weekly command posture" className="wide-panel">
+              <p className="stat-line">{franchise.status}</p>
+              <p>{weeklyAIReport.summary}</p>
+              <div className="metric-strip">
+                <RatingBadge label="Roster" value={`${highNeeds.length} needs`} />
+                <RatingBadge label="Prep" value={weeklyGamePrep.opponent} />
+                <RatingBadge label="Media" value={`${videoBoard.length} clips`} />
+              </div>
+            </FeaturePanel>
             <DashboardCard title="Weekly Game Prep" eyebrow={`Week ${weeklyGamePrep.week}`} className="wide-card feature-card">
               <p className="stat-line">Opponent: {weeklyGamePrep.opponent}</p>
               <p>{weeklyGamePrep.matchupNotes}</p>
@@ -187,4 +204,8 @@ function BoardPanel({ title, eyebrow, children }: { title: string; eyebrow: stri
       <div className="card-content">{children}</div>
     </section>
   );
+}
+
+function activeHubStatus(statuses: FranchiseDashboardData['screenStatuses']) {
+  return `${statuses.filter((screen) => screen.priority === 'Critical' || screen.priority === 'High').length} priority desks`;
 }
