@@ -2,22 +2,26 @@
 
 ## Current State
 
-Phase 5 App Scaffold Implementation is complete. The repository contains a Vite React TypeScript scaffold for Madden Franchise Command Center with a static dashboard shell, mock franchise data, and original broadcast-inspired UI styling. Phase 5 scaffold verification cleanup has removed generated TypeScript/Vite artifacts and added ignore rules to keep verification output out of the working tree.
+Sprint 1 is complete. The Vite React TypeScript scaffold now presents a polished dark command-center mock app with internal screen navigation, canonical screen shells, and expanded static franchise data. The app remains an external franchise companion mock only with original broadcast-inspired styling and no API/backend, real file parsing, external media ingestion, protected assets, or licensed affiliation.
 
 ## Latest Completed Task
 
-- Phase 5 scaffold cleanup after verification
+- Sprint 1 dashboard polish, screen shells, navigation, and mock data expansion
 
 ## Changed Files
 
-- `.gitignore`
-- `tsconfig.json`
-- `tsconfig.node.json`
+- `src/App.tsx`
+- `src/styles.css`
+- `src/data/mockFranchise.ts`
+- `src/types/franchise.ts`
+- `src/components/DashboardCard.tsx`
+- `src/screens/Dashboard.tsx`
+- `src/screens/ScreenShell.tsx`
 - `docs/HANDOFF.md`
 
 ## Next Recommended Task
 
-- Phase 5 build verification retry, then Phase 6 Dashboard Static Mock Screen Review and Polish
+- Local build verification on user machine, then MVP UI polish pass
 
 ## Standing Reminders
 

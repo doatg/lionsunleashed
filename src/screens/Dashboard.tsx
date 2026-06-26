@@ -1,10 +1,15 @@
 import { DashboardCard } from '../components/DashboardCard';
-import { mockFranchise } from '../data/mockFranchise';
+import type { FranchiseDashboardData } from '../types/franchise';
 
-const playerName = (playerId: string) =>
-  mockFranchise.players.find((player) => player.id === playerId)?.name ?? 'Unassigned';
+interface DashboardProps {
+  data: FranchiseDashboardData;
+  onSelectScreen: (screenId: string) => void;
+}
 
-export function Dashboard() {
+const playerName = (data: FranchiseDashboardData, playerId: string) =>
+  data.players.find((player) => player.id === playerId)?.name ?? 'Unassigned';
+
+export function Dashboard({ data, onSelectScreen }: DashboardProps) {
   const {
     franchise,
     teamProfile,
@@ -12,37 +17,58 @@ export function Dashboard() {
     weeklyGamePrep,
     weeklyAIReport,
     injuries,
-    transactions,
     contractNotes,
     draftProspects,
     broadcastRecap,
     videoBoard,
     infoBoard,
-  } = mockFranchise;
+    screenStatuses,
+  } = data;
 
   return (
-    <main className="dashboard-shell">
-      <header className="hero-panel">
-        <div>
-          <p className="kicker">Franchise Operations Desk</p>
-          <h1>{franchise.name}</h1>
-          <p className="hero-copy">{franchise.status}</p>
-        </div>
-        <div className="scorebug" aria-label="Current franchise context">
-          <span>Season {franchise.seasonYear}</span>
-          <strong>Week {franchise.currentWeek}</strong>
-          <span>{franchise.userName}</span>
-        </div>
-      </header>
-
+    <>
       <section className="ticker-strip" aria-label="Franchise goals">
         {franchise.goals.map((goal) => (
           <span key={goal}>{goal}</span>
         ))}
       </section>
 
+      <section className="overview-grid" aria-label="Command-center overview">
+        <div className="overview-card">
+          <span>Current Week</span>
+          <strong>Week {franchise.currentWeek}</strong>
+          <p>{weeklyGamePrep.opponent} prep is active.</p>
+        </div>
+        <div className="overview-card">
+          <span>Roster Alert</span>
+          <strong>{depthChart.filter((group) => group.needLevel === 'High').length} High Needs</strong>
+          <p>Line and defensive back depth are the headline watch points.</p>
+        </div>
+        <div className="overview-card">
+          <span>Action Queue</span>
+          <strong>{weeklyAIReport.actionItems.length} Items</strong>
+          <p>AI report actions feed prep, scouting, and cap notes.</p>
+        </div>
+        <div className="overview-card">
+          <span>Board Status</span>
+          <strong>{videoBoard.length + infoBoard.length} Cards</strong>
+          <p>Media and quick-reference boards are seeded with static mock items.</p>
+        </div>
+      </section>
+
+      <section className="screen-status-grid" aria-label="Canonical screen status cards">
+        {screenStatuses.map((screen) => (
+          <button className="status-card" key={screen.id} type="button" onClick={() => onSelectScreen(screen.id)}>
+            <span className={`priority-pill priority-${screen.priority.toLowerCase()}`}>{screen.priority}</span>
+            <strong>{screen.title}</strong>
+            <em>{screen.status}</em>
+            <p>{screen.summary}</p>
+          </button>
+        ))}
+      </section>
+
       <div className="dashboard-grid">
-        <DashboardCard title="Team Profile" eyebrow="Identity">
+        <DashboardCard title="Team Profile" eyebrow="Identity" className="wide-card">
           <p className="stat-line">
             {teamProfile.city} · {teamProfile.teamName}
           </p>
@@ -56,10 +82,10 @@ export function Dashboard() {
 
         <DashboardCard title="Roster / Depth Chart" eyebrow="Personnel">
           <div className="mini-table">
-            {depthChart.map((group) => (
+            {depthChart.slice(0, 4).map((group) => (
               <div className="mini-row" key={group.id}>
                 <span>{group.positionGroup}</span>
-                <strong>{playerName(group.starterPlayerId)}</strong>
+                <strong>{playerName(data, group.starterPlayerId)}</strong>
                 <em>{group.needLevel} need</em>
               </div>
             ))}
@@ -70,13 +96,13 @@ export function Dashboard() {
           <p className="stat-line">Opponent: {weeklyGamePrep.opponent}</p>
           <p>{weeklyGamePrep.matchupNotes}</p>
           <ul>
-            {weeklyGamePrep.focusAreas.map((focus) => (
+            {weeklyGamePrep.focusAreas.slice(0, 3).map((focus) => (
               <li key={focus}>{focus}</li>
             ))}
           </ul>
         </DashboardCard>
 
-        <DashboardCard title="Weekly AI Report" eyebrow="Command readout">
+        <DashboardCard title="Weekly AI Report" eyebrow="Command readout" className="wide-card">
           <p>{weeklyAIReport.summary}</p>
           <ul>
             {weeklyAIReport.actionItems.map((item) => (
@@ -88,20 +114,16 @@ export function Dashboard() {
         <DashboardCard title="Injury / Transaction Tracker" eyebrow="Availability">
           {injuries.map((injury) => (
             <p key={injury.id}>
-              <strong>{playerName(injury.playerId)}</strong>: {injury.status}, {injury.bodyPart} ·{' '}
+              <strong>{playerName(data, injury.playerId)}</strong>: {injury.status}, {injury.bodyPart} ·{' '}
               {injury.returnEstimate}
             </p>
-          ))}
-          {transactions.map((transaction) => (
-            <p key={transaction.id}>{transaction.details}</p>
           ))}
         </DashboardCard>
 
         <DashboardCard title="Contract / Cap Notes" eyebrow="Front office">
-          {contractNotes.map((note) => (
+          {contractNotes.slice(0, 2).map((note) => (
             <p key={note.id}>
-              <strong>{playerName(note.playerId)}</strong>: {note.capStatus} · {note.priority} priority.{' '}
-              {note.note}
+              <strong>{playerName(data, note.playerId)}</strong>: {note.capStatus} · {note.priority} priority.
             </p>
           ))}
         </DashboardCard>
@@ -120,30 +142,14 @@ export function Dashboard() {
           </div>
         </DashboardCard>
 
-        <DashboardCard title="Broadcast Recap" eyebrow="Last game">
+        <DashboardCard title="Broadcast Recap" eyebrow="Last game" className="wide-card">
           <p className="stat-line">
             {broadcastRecap.result} vs {broadcastRecap.opponent}
           </p>
           <h3>{broadcastRecap.headline}</h3>
           <p>{broadcastRecap.summary}</p>
         </DashboardCard>
-
-        <DashboardCard title="Video Board" eyebrow="Clip desk">
-          {videoBoard.map((item) => (
-            <p key={item.id}>
-              <strong>{item.title}</strong> · {item.status}. {item.description}
-            </p>
-          ))}
-        </DashboardCard>
-
-        <DashboardCard title="Info Board" eyebrow="Quick facts">
-          {infoBoard.map((item) => (
-            <p key={item.id}>
-              <strong>{item.value}</strong> — {item.context}
-            </p>
-          ))}
-        </DashboardCard>
       </div>
-    </main>
+    </>
   );
 }
