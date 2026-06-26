@@ -55,3 +55,10 @@
 - Power Rankings
 - Player Personality
 - Handoff
+
+## Phase 4 Scaffold Entities
+
+- Recommended Stack: Vite, React, TypeScript.
+- Package Manager: npm unless explicitly changed later.
+- Initial Source Structure: main entry, app shell, global styles, mock franchise data, franchise types, reusable components, and screen modules.
+- Initial Vertical Slice: Dashboard shell using static mock data only.

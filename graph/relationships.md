@@ -14,3 +14,6 @@
 - Info Board presents quick-reference franchise facts connected to the franchise, team, players, and recaps.
 - Handoff records completed work and next steps after each task.
 - Brand Safety constrains all naming, visuals, assets, and copy.
+- Phase 4 App Scaffold Planning maps the first implementation task to a Vite React TypeScript scaffold with npm as the default package manager.
+- The first app structure connects `src/main.tsx`, `src/App.tsx`, `src/styles.css`, `src/data/mockFranchise.ts`, `src/types/franchise.ts`, `src/components/`, and `src/screens/` to the Dashboard-first vertical slice.
+- The first vertical slice uses static mock data only and excludes API/backend work, real Madden file parsing, external media ingestion, and protected or licensed visual material.

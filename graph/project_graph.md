@@ -283,3 +283,54 @@ Madden Franchise Command Center is an external Franchise mode command center for
 - Primary data objects: InfoBoardItem, Franchise, TeamProfile, Player, BroadcastRecap.
 - Owned by agent: Info Board.
 - First version scope: Categorized fact cards and reminders.
+
+## Phase 4 App Scaffold Planning
+
+### Recommended Stack
+
+- App framework/build tool: Vite.
+- UI library: React.
+- Language: TypeScript.
+- Package manager: npm unless explicitly changed later.
+
+### First App Structure
+
+- `src/main.tsx`
+- `src/App.tsx`
+- `src/styles.css`
+- `src/data/mockFranchise.ts`
+- `src/types/franchise.ts`
+- `src/components/`
+- `src/screens/`
+
+### First Vertical Slice
+
+- Dashboard shell with static mock data only.
+- The shell should establish the initial command-center layout, high-level status regions, and navigation placeholders for the canonical screens/pages.
+- Static mock data should represent franchise, team, roster alert, weekly prep, report, recap, video board, and info board summaries without connecting to live services.
+
+### Implementation Guardrails
+
+- No copied protected branding, logos, marks, uniforms, broadcast graphics, or assets.
+- Original broadcast-inspired UI only.
+- No API/backend yet.
+- No real Madden file parsing yet.
+- No external media ingestion yet.
+- No licensed affiliation implied.
+
+### First Scaffold Task After Phase 4
+
+- Create Vite React TypeScript app scaffold and Dashboard shell only.
+- Preserve final project name: Madden Franchise Command Center.
+- Preserve canonical screen/page names:
+  1. Dashboard
+  2. Team Profile
+  3. Roster / Depth Chart
+  4. Weekly Game Prep
+  5. Weekly AI Report
+  6. Injury / Transaction Tracker
+  7. Contract / Cap Notes
+  8. Scouting / Draft Board
+  9. Broadcast Recap
+  10. Video Board
+  11. Info Board

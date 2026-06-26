@@ -40,6 +40,16 @@
 10. Video Board
 11. Info Board
 
+
+## Phase 4 App Scaffold Planning
+
+- Recommended stack: Vite, React, TypeScript.
+- Package manager: npm unless explicitly changed later.
+- First app structure: `src/main.tsx`, `src/App.tsx`, `src/styles.css`, `src/data/mockFranchise.ts`, `src/types/franchise.ts`, `src/components/`, and `src/screens/`.
+- First vertical slice: Dashboard shell with static mock data only.
+- First scaffold task after Phase 4: Create Vite React TypeScript app scaffold and Dashboard shell only.
+- Guardrails: no copied protected branding, logos, marks, uniforms, broadcast graphics, or assets; original broadcast-inspired UI only; no API/backend; no real Madden file parsing; no external media ingestion; no licensed affiliation implied.
+
 ## Execution Rule
 
 Work one scoped task at a time and update `docs/HANDOFF.md` when complete.

@@ -2,22 +2,24 @@
 
 ## Current State
 
-Project knowledge docs and graph files now use the protected-safe project name Madden Franchise Command Center while preserving canonical MVP screens/pages and Phase 1, Phase 2, and Phase 3 planning.
+Project knowledge docs and graph files now include Phase 4 App Scaffold Planning for Madden Franchise Command Center while preserving Phase 1, Phase 2, and Phase 3 planning and the canonical MVP screens/pages.
 
 ## Latest Completed Task
 
-- Fixed protected project naming after PR #2 merge.
+- Phase 4 App Scaffold Planning added.
 
 ## Changed Files
 
 - `docs/PROJECT_BRIEF.md`
-- `docs/CODEX_RULES.md`
 - `docs/HANDOFF.md`
 - `graph/project_graph.md`
+- `graph/entities.md`
+- `graph/relationships.md`
+- `graph/codex_task_map.md`
 
 ## Next Recommended Task
 
-- Phase 4 App Scaffold Planning
+- Phase 5 App Scaffold Implementation
 
 ## Standing Reminders
 
