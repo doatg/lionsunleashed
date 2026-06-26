@@ -1,6 +1,6 @@
 # Project Brief
 
-## Madden FOX Sports Network Companion App
+## Madden Franchise Command Center
 
 External Madden Franchise companion app for Rolland G, a franchise-focused Madden player who is not online-focused.
 
@@ -10,7 +10,7 @@ Create a broadcast-style franchise command center for Franchise mode. This is no
 
 ## Branding Guardrails
 
-Use original broadcast-inspired styling only. Do not copy or imply affiliation with FOX, NFL, EA, Madden, teams, leagues, broadcasts, logos, marks, uniforms, or protected assets.
+Use original broadcast-inspired styling only. Do not copy or imply licensed affiliation with NFL, EA, Madden, teams, leagues, broadcasts, logos, marks, uniforms, or protected assets.
 
 ## Canonical MVP Screens/Pages
 

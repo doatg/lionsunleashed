@@ -2,11 +2,11 @@
 
 ## Current State
 
-Project knowledge docs and graph files now reflect the current branch state with canonical MVP screens/pages and rebuilt Phase 1, Phase 2, and Phase 3 planning.
+Project knowledge docs and graph files now use the protected-safe project name Madden Franchise Command Center while preserving canonical MVP screens/pages and Phase 1, Phase 2, and Phase 3 planning.
 
 ## Latest Completed Task
 
-- Rebuilt graph with Phase 1–3 planning on current branch.
+- Fixed protected project naming after PR #2 merge.
 
 ## Changed Files
 
@@ -14,9 +14,6 @@ Project knowledge docs and graph files now reflect the current branch state with
 - `docs/CODEX_RULES.md`
 - `docs/HANDOFF.md`
 - `graph/project_graph.md`
-- `graph/entities.md`
-- `graph/relationships.md`
-- `graph/codex_task_map.md`
 
 ## Next Recommended Task
 
@@ -26,5 +23,6 @@ Project knowledge docs and graph files now reflect the current branch state with
 
 - External Madden Franchise companion app only.
 - Original broadcast-inspired styling only.
-- No copied or official FOX, NFL, EA, Madden, team, league, or broadcast assets.
+- No copied NFL, EA, Madden, team, league, or broadcast assets.
+- Do not imply licensed affiliation.
 - Update this handoff after every completed task.
