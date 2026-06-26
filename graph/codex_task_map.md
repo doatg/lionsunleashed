@@ -6,9 +6,19 @@
 2. `graph/codex_task_map.md`
 3. `docs/HANDOFF.md`
 
+## UI Task Read Rule
+
+Before any UI-related implementation, styling, layout, component, screen, or design-system task, Codex must read:
+
+1. `graph/project_graph.md`
+2. `graph/ui_style_graph.md`
+3. `graph/codex_task_map.md`
+4. `docs/HANDOFF.md`
+
 ## Task Routing
 
 - Project scope or MVP decisions: Franchise Director
+- UI consistency and design-system tasks: Franchise Director + UI System Agent
 - Team profile and franchise direction: Franchise Director
 - Roster, depth chart, team direction: GM Advisor
 - Contracts and cap notes: Contract
