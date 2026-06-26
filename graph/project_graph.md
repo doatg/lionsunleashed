@@ -2,7 +2,7 @@
 
 ## Core Project
 
-Madden FOX Sports Network Companion App is an external Franchise mode command center for Rolland G.
+Madden Franchise Command Center is an external Franchise mode command center for Rolland G.
 
 ## Primary Nodes
 
@@ -17,4 +17,4 @@ Madden FOX Sports Network Companion App is an external Franchise mode command ce
 
 - Not an in-game mod
 - No copied logos, marks, or protected assets
-- No official affiliation implied
+- No affiliation implied
