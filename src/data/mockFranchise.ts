@@ -343,6 +343,12 @@ export const mockFranchise: FranchiseDashboardData = {
       relatedEntityId: 'recap-week-6',
     },
   ],
+  tickerFeed: [
+    'Protection lab: quick-game answers installed',
+    'Scouting: two mid-round DB fits tagged',
+    'Cap desk: extension priorities under review',
+    'Media board: Week 6 response theme carried forward',
+  ],
   screenStatuses: [
     {
       id: 'dashboard',

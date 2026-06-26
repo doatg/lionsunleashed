@@ -97,7 +97,7 @@ export default function App() {
 }
 
 function TopTicker({ activeScreenLabel }: { activeScreenLabel: string }) {
-  const { franchise, weeklyGamePrep, weeklyAIReport, injuries, videoBoard } = mockFranchise;
+  const { franchise, weeklyGamePrep, weeklyAIReport, injuries, videoBoard, tickerFeed } = mockFranchise;
 
   return (
     <section className="top-ticker" aria-label="Broadcast-style franchise status ticker">
@@ -109,6 +109,9 @@ function TopTicker({ activeScreenLabel }: { activeScreenLabel: string }) {
         <span>{weeklyAIReport.actionItems.length} AI action items</span>
         <span>{injuries.length} availability alerts</span>
         <span>{videoBoard.length} video board clips queued</span>
+        {tickerFeed.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
         <span>Active desk: {activeScreenLabel}</span>
       </div>
     </section>
