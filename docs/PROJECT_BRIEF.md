@@ -1,8 +1,8 @@
 # Project Brief
 
-## Madden FOX Sports Network Companion App
+## Madden Franchise Command Center
 
-External Madden/NFL Franchise companion app for Rolland G, a franchise-focused Madden player who is not online-focused.
+External Madden Franchise companion app for Rolland G, a franchise-focused Madden player who is not online-focused.
 
 ## Purpose
 

@@ -9,4 +9,4 @@
 7. Keep the app external to Madden Franchise mode; do not build an in-game mod.
 8. Use only original broadcast-inspired styling and naming.
 9. Do not use copied FOX, NFL, EA, Madden, team, league, broadcast logos, marks, or assets.
-10. Do not imply official affiliation.
+10. Do not imply affiliation.
